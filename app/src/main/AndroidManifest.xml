@@ -74,6 +74,9 @@
         <activity android:name=".Search.SearchActivity"
             android:launchMode="singleTask" />
 
+        <activity android:name=".Search.NaviActivity"
+            android:launchMode="singleTask" />
+
     </application>
 
 </manifest>
