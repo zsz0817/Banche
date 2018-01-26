@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/head_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FC361D">
+
+        <RelativeLayout
+            android:id="@+id/right_back_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back_feed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/home_back_ic" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="反馈"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/feedback_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="0.40"
+        android:gravity="top"
+        android:hint="请将您的问题告诉我们............"
+        android:inputType="textMultiLine"
+        android:lines="7"
+        android:textSize="30sp" >
+    </EditText>
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_button"
+        android:text="提交" />
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="background_holo_light">#fff3f3f3</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="text_white">#ffffffff</color>
+    <color name="text_secondary">#8a000000</color>
+    <color name="text_primary">#df000000</color>
+    <color name="red">#FF0000</color>
+    <color name="black">#000000 </color>
+    <color name="gray">#808080</color>
+    <color name="orange">#FC361D</color>
+    <!-- 灰色 -->
+    <color name="whitesmoke">#F5F5F5</color>
+    <!-- 烟白色 -->
+
+    <color name="white_grey">#f0f0f0</color>
+    <color name="new_blue_normal">#64beff</color>
+    <color name="dark_grey">#999999</color>
+    <color name="bright_grey">#dedede</color>
+    <color name="white">#FFFFFF</color>
+
+
+        <color name="grey"> #ebebeb</color>
+        <color name="darkgrey"> #999999</color>
+        <color name="blue">#4c90f9</color>
+        <color name="gary">#898989</color>
+        <color name="gray_lite">#c5c5c5</color>
+        <color name="phone_bg">#f6f6f6</color>
+        <color name="transparent">#00000000</color>
+        <color name="itemlist">#f4f4f4</color>
+        <color name="watermark_hint">#ccffffff</color>
+        <color name="act_background">#efefef</color>
+
+
+</resources>
