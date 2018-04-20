@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
@@ -37,18 +38,19 @@ import java.util.Map;
  */
 
 public class SearchResult extends Activity implements AMap.OnMarkerClickListener,
-        AMap.InfoWindowAdapter, CloudSearch.OnCloudSearchListener, AMap.OnInfoWindowClickListener {
+        AMap.InfoWindowAdapter, CloudSearch.OnCloudSearchListener, AMap.OnInfoWindowClickListener, View.OnClickListener{
 
     private CloudSearch mCloudSearch;
     private MapView mapView;
     private AMap mAMap;
+    private ImageView tothere;
 
     private Marker mCloudIDMarer;
     private String TAG = "AMapYunTuDemo";
     private String mLocalCityName = "深圳市";
     private ArrayList<CloudItem> items = new ArrayList<CloudItem>();
 
-    private List<CloudItem> mCloudItems;
+    private ArrayList<CloudItem> mCloudItems;
     private List<CloudOverlay> overlays;
     private String mTableID = "5a49c02f2376c17f01cddda9";
     private String mId = "2"; // 用户table 行编号
@@ -77,16 +79,16 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
             mKeyWord = intent.getStringExtra("ID");
             items.clear();
             CloudSearch.SearchBound bound = new CloudSearch.SearchBound(mLocalCityName);
-            mCloudSearch = new CloudSearch(this);// 初始化查询类
-            mCloudSearch.setOnCloudSearchListener(this);// 设置回调函数
-//            try {
-//                mQuery = new CloudSearch.Query(mTableID, mKeyWord, bound);
-//                mCloudSearch.searchCloudAsyn(mQuery);
-//            } catch (AMapException e) {
-//                ToastUtil.show(this, e.getErrorMessage());
-//                e.printStackTrace();
-//            }
-            mCloudSearch.searchCloudDetailAsyn(mTableID, mId);
+//            mCloudSearch = new CloudSearch(this);// 初始化查询类
+//            mCloudSearch.setOnCloudSearchListener(this);// 设置回调函数
+            try {
+                mQuery = new CloudSearch.Query(mTableID, mKeyWord, bound);
+                mCloudSearch.searchCloudAsyn(mQuery);
+            } catch (AMapException e) {
+                ToastUtil.show(this, e.getErrorMessage());
+                e.printStackTrace();
+            }
+//            mCloudSearch.searchCloudDetailAsyn(mTableID, mId);
         }
     }
 
@@ -103,7 +105,20 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
         mAMap.setOnInfoWindowClickListener(this);
         mAMap.setInfoWindowAdapter(this);
         mAMap.setOnInfoWindowClickListener(this);
+        tothere = (ImageView)findViewById(R.id.toThere);
+        tothere.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.toThere:
+                Intent intent = new Intent(SearchResult.this,WalkRouteCalculateActivity.class);
+                //Toast.makeText(SearchResult.this,mCloudItems.size(),Toast.LENGTH_SHORT).show();
+                intent.putExtra("clouditem", mCloudItems.get(0));
+                startActivity(intent);
+                break;
+        }
     }
 
     /**
@@ -144,37 +159,38 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
 
     @Override
     public void onCloudItemDetailSearched(CloudItemDetail item, int rCode) {
-        if (rCode == AMapException.CODE_AMAP_SUCCESS && item != null) {
-            if (mCloudIDMarer != null) {
-                mCloudIDMarer.destroy();
-            }
-            mAMap.clear();
-            LatLng position = AMapUtil.convertToLatLng(item.getLatLonPoint());
-            mAMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(new CameraPosition(position, 18, 0, 30)));
-            mCloudIDMarer = mAMap.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(item.getTitle())
-                    .icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            items.add(item);
-            Log.d(TAG, "_id" + item.getID());
-            Log.d(TAG, "_location" + item.getLatLonPoint().toString());
-            Log.d(TAG, "_name" + item.getTitle());
-            Log.d(TAG, "_address" + item.getSnippet());
-            Log.d(TAG, "_caretetime" + item.getCreatetime());
-            Log.d(TAG, "_updatetime" + item.getUpdatetime());
-            Log.d(TAG, "_distance" + item.getDistance());
-            Iterator iter = item.getCustomfield().entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry entry = (Map.Entry) iter.next();
-                Object key = entry.getKey();
-                Object val = entry.getValue();
-                Log.d(TAG, key + "   " + val);
-            }
-        } else {
-            ToastUtil.showerror(SearchResult.this, rCode);
-        }
+//        if (rCode == AMapException.CODE_AMAP_SUCCESS && item != null) {
+//            if (mCloudIDMarer != null) {
+//                mCloudIDMarer.destroy();
+//            }
+//            mAMap.clear();
+//            LatLng position = AMapUtil.convertToLatLng(item.getLatLonPoint());
+//            mAMap.animateCamera(CameraUpdateFactory
+//                    .newCameraPosition(new CameraPosition(position, 18, 0, 30)));
+////            mCloudIDMarer = mAMap.addMarker(new MarkerOptions()
+////                    .position(position)
+////                    .title(item.getTitle())
+////                    .icon(BitmapDescriptorFactory
+////                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//            items.add(item);
+//            Log.i(TAG, "_id" + item.getID());
+//            Log.i(TAG, "_location" + item.getLatLonPoint().toString());
+//            Log.i(TAG, "_name" + item.getTitle());
+//            Log.i(TAG, "_address" + item.getSnippet());
+//            Toast.makeText(SearchResult.this,"_address" + item.getSnippet(),Toast.LENGTH_SHORT).show();
+//            Log.i(TAG, "_caretetime" + item.getCreatetime());
+//            Log.i(TAG, "_updatetime" + item.getUpdatetime());
+//            Log.i(TAG, "_distance" + item.getDistance());
+//            Iterator iter = item.getCustomfield().entrySet().iterator();
+//            while (iter.hasNext()) {
+//                Map.Entry entry = (Map.Entry) iter.next();
+//                Object key = entry.getKey();
+//                Object val = entry.getValue();
+//                Log.i(TAG, key + "   " + val);
+//            }
+//        } else {
+//            ToastUtil.showerror(SearchResult.this, rCode);
+//        }
 
     }
 
@@ -191,64 +207,27 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
                         mPoiCloudOverlay.removeFromMap();
                         mPoiCloudOverlay.addToMap();
                         mPoiCloudOverlay.zoomToSpan();
-                        overlays.add(mPoiCloudOverlay);
+                        //overlays.add(mPoiCloudOverlay);
                         for (CloudItem item : mCloudItems) {
                             items.add(item);
-                            Log.d(TAG, "_id " + item.getID());
-                            Log.d(TAG, "_location "
+                            Log.i(TAG, "_id " + item.getID());
+                            Log.i(TAG, "_location "
                                     + item.getLatLonPoint().toString());
-                            Log.d(TAG, "_name " + item.getTitle());
-                            Log.d(TAG, "_address " + item.getSnippet());
-                            Log.d(TAG, "_caretetime " + item.getCreatetime());
-                            Log.d(TAG, "_updatetime " + item.getUpdatetime());
-                            Log.d(TAG, "_distance " + item.getDistance());
+                            Log.i(TAG, "_name " + item.getTitle());
+                            Log.i(TAG, "_address " + item.getSnippet());
+                            ToastUtil.showShortToast(SearchResult.this,"_address1" + item.getSnippet());
+                            Log.i(TAG, "_caretetime " + item.getCreatetime());
+                            Log.i(TAG, "_updatetime " + item.getUpdatetime());
+                            Log.i(TAG, "_distance " + item.getDistance());
                             Iterator iter = item.getCustomfield().entrySet()
                                     .iterator();
                             while (iter.hasNext()) {
                                 Map.Entry entry = (Map.Entry) iter.next();
                                 Object key = entry.getKey();
                                 Object val = entry.getValue();
-                                Log.d(TAG, key + "   " + val);
+                                Log.i(TAG, key + "   " + val);
                             }
                         }
-//                        if (mQuery.getBound().getShape()
-//                                .equals(CloudSearch.SearchBound.BOUND_SHAPE)) {// 圆形
-//                            mAMap.addCircle(new CircleOptions()
-//                                    .center(new LatLng(mCenterPoint
-//                                            .getLatitude(), mCenterPoint
-//                                            .getLongitude())).radius(5000)
-//                                    .strokeColor(
-//                                            // Color.argb(50, 1, 1, 1)
-//                                            Color.RED)
-//                                    .fillColor(Color.argb(50, 1, 1, 1))
-//                                    .strokeWidth(5));
-//
-//                            mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//                                    new LatLng(mCenterPoint.getLatitude(),
-//                                            mCenterPoint.getLongitude()), 12));
-//
-//                        } else if (mQuery.getBound().getShape()
-//                                .equals(CloudSearch.SearchBound.POLYGON_SHAPE)) {
-//                            mAMap.addPolygon(new PolygonOptions()
-//                                    .add(AMapUtil.convertToLatLng(mPoint1))
-//                                    .add(AMapUtil.convertToLatLng(mPoint2))
-//                                    .add(AMapUtil.convertToLatLng(mPoint3))
-//                                    .add(AMapUtil.convertToLatLng(mPoint4))
-//                                    .fillColor(Color.argb(50, 1, 1, 1))
-//                                    .strokeColor(Color.RED).strokeWidth(1));
-//                            LatLngBounds bounds = new LatLngBounds.Builder()
-//                                    .include(AMapUtil.convertToLatLng(mPoint1))
-//                                    .include(AMapUtil.convertToLatLng(mPoint2))
-//                                    .include(AMapUtil.convertToLatLng(mPoint3))
-//                                    .build();
-//                            mAMap.moveCamera(CameraUpdateFactory
-//                                    .newLatLngBounds(bounds, 50));
-//                        }
-//                        else if ((mQuery.getBound().getShape()
-//                                .equals(CloudSearch.SearchBound.LOCAL_SHAPE))) {
-//                            mPoiCloudOverlay.zoomToSpan();
-//                        }
-
                     } else {
                         ToastUtil.show(this, R.string.no_result);
                     }
@@ -284,7 +263,6 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
         String tile = arg0.getTitle();
         for (CloudItem item : items) {
             if (tile.equals(item.getTitle())) {
-                Toast.makeText(SearchResult.this,"定位成功"+item.getTitle(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SearchResult.this,
                         WalkRouteActivity.class);
                 intent.putExtra("clouditem", item);

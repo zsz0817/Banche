@@ -16,11 +16,26 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.example.shizhuan.banche.Http.OkHttpClientManager;
+import com.example.shizhuan.banche.Search.BusLocateActivity;
 import com.example.shizhuan.banche.Search.SearchActivity;
 import com.example.shizhuan.banche.Setting.SettingActivity;
+import com.example.shizhuan.banche.util.Constants;
+import com.squareup.okhttp.Request;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,6 +46,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private ImageView bus;
     private MapView mapView;
     private AMap aMap;
+    private MarkerOptions markerOption;
+    CameraUpdate cameraUpdate;
 
     //声明mlocationClient对象
     public AMapLocationClient mlocationClient;
@@ -153,6 +170,48 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 intent = new Intent(MainActivity.this,SettingActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.bus:
+                OkHttpClientManager.getAsyn(Constants.url_getLocation, new OkHttpClientManager.StringCallback() {
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject allObject = new JSONObject(response);
+                            JSONObject head = allObject.getJSONObject("head");
+                            JSONObject body = allObject.getJSONObject("body");
+                            String retcode = head.getString("RTNSTS");
+                            double longitude = body.getDouble("LONGITUDE");
+                            double latitude = body.getDouble("LATITUDE");
+                            LatLng latLng = new LatLng(latitude,longitude);
+                            changeCamera(
+                                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                                            latLng, 18, 30, 0)));
+                            aMap.clear();
+                            aMap.addMarker(new MarkerOptions().position(latLng)
+                                    .icon(BitmapDescriptorFactory
+                                            .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+//                            aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+//                            addMarkersToMap(latLng);// 往地图上添加marker
+////                            cameraUpdate= CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,8,0,30));
+//                            LatLngBounds.Builder builder = LatLngBounds.builder();
+//                            builder.include(latLng);
+//                            builder.include(new LatLng(longitude+0.000009,latitude+0.000009));
+//                            cameraUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(),1);
+////                            aMap.animateCamera(cameraUpdate);
+////                            aMap.moveCamera(cameraUpdate);
+
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                break;
         }
     }
 
@@ -193,4 +252,26 @@ public class MainActivity extends Activity implements View.OnClickListener{
             mlocationClient.onDestroy();
         }
     }
+
+    /**
+     * 在地图上添加marker
+     */
+    private void addMarkersToMap(LatLng latLng) {
+        markerOption = new MarkerOptions().icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .position(latLng)
+                .draggable(true);
+        aMap.addMarker(markerOption);
+    }
+
+
+    /**
+     * 根据动画按钮状态，调用函数animateCamera或moveCamera来改变可视区域
+     */
+    private void changeCamera(CameraUpdate update) {
+
+        aMap.moveCamera(update);
+
+    }
+
 }

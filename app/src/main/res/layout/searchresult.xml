@@ -10,4 +10,11 @@
         android:layout_height="fill_parent"
         />
 
+    <ImageView
+        android:id="@+id/toThere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_tab_discovery_h"
+        android:layout_alignParentRight="true"/>
+
 </RelativeLayout>

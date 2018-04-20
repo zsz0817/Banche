@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,11 @@ import android.widget.Toast;
 import com.example.shizhuan.banche.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 
@@ -29,36 +33,37 @@ import java.util.Map;
  * Created by ShiZhuan on 2018/1/17.
  */
 
-public class MessageActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener,AbsListView.OnScrollListener{
+public class MessageActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener{
 
-    private List<Map<String,Object>> listdata;
+    private List<Map<String,Object>> listdata = new ArrayList<>();
     private ImageView back_btn;
     private ListView messagelist;
     private Intent intent;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.message_layout);
-//        init();
-//        listdata = getData();
-//        MessageAdapter messageAdapter = new MessageAdapter(this);
-//        messagelist.setAdapter(messageAdapter);
+        init();
+        listdata = getData();
+        MessageAdapter messageAdapter = new MessageAdapter(this);
+        messagelist.setAdapter(messageAdapter);
     }
 
     private void init(){
         back_btn = (ImageView)findViewById(R.id.back_btn);
-//        messagelist = (ListView)findViewById(R.id.message_list);
+        messagelist = (ListView)findViewById(R.id.message_list);
         back_btn.setOnClickListener(this);
         messagelist.setOnItemClickListener(this);
-        messagelist.setOnScrollListener(this);
+//        messagelist.setOnScrollListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.back_btn:
-
+                intent = new Intent(MessageActivity.this,SettingActivity.class);
+                startActivity(intent);
             break;
 
         }
@@ -76,16 +81,16 @@ public class MessageActivity extends Activity implements View.OnClickListener,Ad
         startActivity(intent);
 
     }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-    }
+//
+//    @Override
+//    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//
+//    }
+//
+//    @Override
+//    public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//    }
 
     private List<Map<String,Object>> getData(){
         Map<String, Object> map = new HashMap<String, Object>();
@@ -97,7 +102,7 @@ public class MessageActivity extends Activity implements View.OnClickListener,Ad
 
     class MessageAdapter extends BaseAdapter {
 
-        private int mScrollState = SCROLL_STATE_IDLE;
+//        private int mScrollState = SCROLL_STATE_IDLE;
         private List<Runnable> mPendingNotify = new ArrayList<Runnable>();
 
         private LayoutInflater mLayoutInflater;
@@ -123,7 +128,7 @@ public class MessageActivity extends Activity implements View.OnClickListener,Ad
             }
 
             viewHolder.mess_title.setText((String)listdata.get(position).get("title"));
-            viewHolder.mess_title.setText((String)listdata.get(position).get("date"));
+            viewHolder.create_date.setText((String)listdata.get(position).get("date"));
 
             return view;
         }

@@ -35,6 +35,8 @@
     <!-- 从SDCard读取数据权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -77,6 +79,19 @@
         <activity android:name=".Search.NaviActivity"
             android:launchMode="singleTask" />
 
+        <activity android:name=".Search.GPSNaviActivity"
+            android:launchMode="singleTask" />
+
+        <activity android:name=".Search.WalkRouteCalculateActivity"
+        android:theme="@android:style/Theme.NoTitleBar"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity
+            android:name="com.amap.api.navi.AmapRouteActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity android:name=".Search.BusLocateActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>
 
 </manifest>
