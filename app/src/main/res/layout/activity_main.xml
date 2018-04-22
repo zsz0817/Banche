@@ -59,6 +59,18 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/linedetail_bus_big_ic"
             android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:text="退 出"/>
     </RelativeLayout>
 
 
