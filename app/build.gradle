@@ -25,17 +25,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile files('libs/Amap_2DMap_V5.2.0_20170627.jar')
-    compile files('libs/AMap_Location_V3.6.1_20171012.jar')
-    compile files('libs/AMap3DMap_5.5.0_AMapNavi_5.4.0_20171107.jar')
-    compile files('libs/Msc.jar')
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile files('libs/commons-beanutils-1.9.3.jar')
-    compile files('libs/commons-collections-3.2.1.jar')
-    compile files('libs/commons-lang-2.5.jar')
-    compile files('libs/ezmorph-1.0.6.jar')
-    compile files('libs/json-lib-2.4-jdk15.jar')
+        compile fileTree(include: ['*.jar'], dir: 'libs')
+        testCompile 'junit:junit:4.12'
+        compile 'com.android.support:appcompat-v7:25.3.1'
+        compile files('libs/Amap_2DMap_V5.2.0_20170627.jar')
+        compile files('libs/AMap_Location_V3.6.1_20171012.jar')
+        compile files('libs/AMap3DMap_5.5.0_AMapNavi_5.4.0_20171107.jar')
+        compile 'com.squareup.okhttp:okhttp:2.7.5'
+        compile files('libs/commons-beanutils-1.9.3.jar')
+        compile files('libs/commons-collections-3.2.1.jar')
+        compile files('libs/commons-lang-2.5.jar')
+        compile files('libs/ezmorph-1.0.6.jar')
+        compile files('libs/json-lib-2.4-jdk15.jar')
+        compile 'com.android.support:design:25.1.1'
 }

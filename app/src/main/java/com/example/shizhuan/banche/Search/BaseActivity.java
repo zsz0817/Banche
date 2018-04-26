@@ -23,7 +23,6 @@ import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.model.NaviLatLng;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.shizhuan.banche.util.ErrorInfo;
-import com.example.shizhuan.banche.util.TTSController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,6 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
 
     protected AMapNaviView mAMapNaviView;
     protected AMapNavi mAMapNavi;
-    protected TTSController mTtsManager;
     protected NaviLatLng mEndLatlng = new NaviLatLng(40.084894,116.603039);
     protected NaviLatLng mStartLatlng = new NaviLatLng(39.825934,116.342972);
     protected final List<NaviLatLng> sList = new ArrayList<NaviLatLng>();
@@ -51,7 +49,6 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
         //
         mAMapNavi = AMapNavi.getInstance(getApplicationContext());
         mAMapNavi.addAMapNaviListener(this);
-        mAMapNavi.addAMapNaviListener(mTtsManager);
 
         //设置模拟导航的行车速度
         mAMapNavi.setEmulatorNaviSpeed(75);

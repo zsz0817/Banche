@@ -58,11 +58,6 @@ public class SearchResult extends Activity implements AMap.OnMarkerClickListener
     private CloudSearch.Query mQuery;
     private CloudOverlay mPoiCloudOverlay;
 
-    private LatLonPoint mCenterPoint = new LatLonPoint(39.942753, 116.428650); // 周边搜索中心点
-    private LatLonPoint mPoint1 = new LatLonPoint(39.941711, 116.382248);
-    private LatLonPoint mPoint2 = new LatLonPoint(39.884882, 116.359566);
-    private LatLonPoint mPoint3 = new LatLonPoint(39.878120, 116.437630);
-    private LatLonPoint mPoint4 = new LatLonPoint(39.941711, 116.382248);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

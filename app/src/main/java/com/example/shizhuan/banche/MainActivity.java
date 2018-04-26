@@ -53,7 +53,7 @@ import java.util.Map;
 public class MainActivity extends Activity implements View.OnClickListener,AMapLocationListener{
 
     private final int MSG_HELLO = 0;
-    private Handler mHandler;
+    private static Handler mHandler;
 
     ImageButton imageButton1,imageButton2,imageButton3;
     TextView stop;
@@ -146,6 +146,14 @@ public class MainActivity extends Activity implements View.OnClickListener,AMapL
                 startActivity(intent);
                 break;
             case R.id.bus:
+                bus.setVisibility(View.GONE);
+                stop.setVisibility(View.VISIBLE);
+                aMap.getUiSettings().setMyLocationButtonEnabled(false);
+//                deactivate();
+                mlocationClient.stopLocation();
+
+                isQueryNow = true;
+                isFirstLatLng = true;
                 SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
                 Date date = new Date();
@@ -161,15 +169,9 @@ public class MainActivity extends Activity implements View.OnClickListener,AMapL
                 param.put("body",map2);
                 new CustomThread().start();//新建并启动CustomThread实例
                 net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(param);
-                Toast.makeText(MainActivity.this,jsonArray.toString(),Toast.LENGTH_SHORT).show();
                 String tmp = jsonArray.toString().substring(1,jsonArray.toString().length()-1);
                 Log.d("Test", "MainThread is ready to send msg:" + tmp);
                 mHandler.obtainMessage(MSG_HELLO, tmp).sendToTarget();//发送消息到CustomThread实例
-                bus.setVisibility(View.GONE);
-                stop.setVisibility(View.VISIBLE);
-                aMap.getUiSettings().setMyLocationButtonEnabled(false);
-//                deactivate();
-                mlocationClient.stopLocation();
 //                    OkHttpClientManager.getAsyn(Constants.url_getLocation, new OkHttpClientManager.StringCallback() {
 //                        @Override
 //                        public void onFailure(Request request, IOException e) {
@@ -236,10 +238,8 @@ public class MainActivity extends Activity implements View.OnClickListener,AMapL
                 public void handleMessage (Message msg) {//3、定义处理消息的方法
                     switch(msg.what) {
                         case MSG_HELLO:
-                            isQueryNow = true;
-                            isFirstLatLng = true;
-                            while (isQueryNow) {
-                                try {
+                            try {
+                                while (isQueryNow){
                                     Response response = OkHttpClientManager.getAsyn(Constants.url_getLocation + msg.obj);
                                     JSONObject allObject = new JSONObject(response.body().string());
                                     JSONObject head = allObject.getJSONObject("head");
@@ -249,6 +249,7 @@ public class MainActivity extends Activity implements View.OnClickListener,AMapL
                                     double latitude = body.getDouble("LATITUDE");
                                     LatLng newLatLng = new LatLng(latitude, longitude);
 
+                                    Toast.makeText(MainActivity.this,body.toString(),Toast.LENGTH_SHORT).show();
                                     aMap.clear();
                                     aMap.addMarker(new MarkerOptions().position(newLatLng)
                                             .icon(BitmapDescriptorFactory
@@ -265,16 +266,18 @@ public class MainActivity extends Activity implements View.OnClickListener,AMapL
                                     }
 
                                     //位置有变化
-                                    if (oldLatLng != newLatLng) {
+                                    if (!oldLatLng.equals(newLatLng)) {
                                         setUpMap(oldLatLng, newLatLng);
                                         oldLatLng = newLatLng;
                                     }
 
                                     Thread.sleep(1000);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                            break;
                     }
                 }
             };
